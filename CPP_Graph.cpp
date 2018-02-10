@@ -1,4 +1,5 @@
 #include<iostream>
+#include <queue>
 
 using namespace std;
 
@@ -60,6 +61,34 @@ void printGraph(struct Graph* graph){
     }
 }
 
+void BFS(struct Graph* G, int s){
+    bool *visited = new bool[G->V];
+    for(int i=0; i < G->V; i++){
+        visited[i] = false;
+    }
+    queue<int> Q;
+    visited[s] = true;
+    Q.push(s);
+
+    struct Node* temp = NULL;
+
+    while(!Q.empty()){
+        s = Q.front();
+        cout << s << " ";        
+        temp = G->array[s].head;
+        Q.pop();
+        while(temp != NULL){
+            if(!visited[temp->dest]){
+                visited[temp->dest] = true;
+                Q.push(temp->dest);
+            }
+            temp = temp->next;
+
+        }
+    }
+}
+
+
 int main(){
 
     int V=5;
@@ -72,6 +101,7 @@ int main(){
     addEdge(graph, 2, 3);
     addEdge(graph, 3, 4);
     printGraph(graph);
+    cout << "\nBFS = ";
+    BFS(graph,0);
     return 0;
 }
-
