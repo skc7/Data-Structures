@@ -42,9 +42,9 @@ void addEdge(struct Graph* graph, int src, int dest){
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
 
-    newNode =  new_Node(src);
-    newNode->next = graph->array[dest].head;
-    graph->array[dest].head = newNode;
+    //newNode =  new_Node(src);
+    //newNode->next = graph->array[dest].head;
+    //graph->array[dest].head = newNode;
 }
 
 void printGraph(struct Graph* graph){
@@ -123,6 +123,47 @@ void DFS(struct Graph* G, int s){
 
 }
 
+void topologicalsort_util(struct Graph* G, int v, bool visited[], stack<int> &stk){
+
+    visited[v] = true;
+    struct Node* temp = G->array[v].head; 
+    while(temp != NULL){
+        cout << "\nIn TU while";
+        if(!visited[temp->dest]){
+            cout << "\nIn TU while if " << temp->dest;
+            topologicalsort_util(G,temp->dest,visited,stk);
+            
+        }
+        temp = temp->next;
+        
+    }
+    cout << "\nIn TU while if stkpush " << v;
+    stk.push(v);
+}
+
+void TopologicalSort(struct Graph* G){
+    stack <int> stk;
+    bool *visited = new bool[G->V];
+    for(int i=0; i< G->V;i++){
+        visited[i] = false;
+    }
+
+    for(int i=0; i<G->V; i++){
+        if(visited[i] == false){
+            cout << "\nIn T " << i; 
+            topologicalsort_util(G,i,visited,stk);
+        }
+            
+    }
+
+    while(stk.empty() == false){
+        cout << " " << stk.top();
+        stk.pop();
+    }
+
+
+}
+
 
 int main(){
 
@@ -141,6 +182,9 @@ int main(){
 
     cout << "\nBFS = ";
     BFS(graph,0);
+
+    cout << "\ntopo: ";
+    TopologicalSort(graph);
 
 
     return 0;
