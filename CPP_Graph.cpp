@@ -1,5 +1,6 @@
 #include<iostream>
 #include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -88,6 +89,40 @@ void BFS(struct Graph* G, int s){
     }
 }
 
+void DFS(struct Graph* G, int s){
+    bool* visited = new bool[G->V];
+    for(int i=0; i<G->V;i++){
+        visited[i] = false;
+    }
+
+    stack<int> stk;
+    visited[s] = true;
+    stk.push(s);
+
+    struct Node* temp = NULL;
+
+    while(!stk.empty()){
+        s = stk.top();
+        cout << " " << s;
+        temp = G->array[s].head;
+        stk.pop();
+
+        while(temp != NULL){
+
+            if(!visited[temp->dest]){
+                visited[temp->dest] = true;
+                stk.push(temp->dest);
+            }
+            
+            temp = temp->next;
+        }
+
+    }
+
+
+
+}
+
 
 int main(){
 
@@ -101,7 +136,12 @@ int main(){
     addEdge(graph, 2, 3);
     addEdge(graph, 3, 4);
     printGraph(graph);
+    cout << "\nDFS = ";
+    DFS(graph,0);
+
     cout << "\nBFS = ";
     BFS(graph,0);
+
+
     return 0;
 }
