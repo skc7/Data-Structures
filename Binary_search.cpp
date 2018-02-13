@@ -43,14 +43,23 @@ void selectionSort(int a[],int len){
     }
 }
 
+void InsertionSort(int a[],int len){
 
+    for(int i=1;i<len;i++){
+        int j = i;
+        while(j >0 && a[j] < a[j-1]){
+            swap(a,j,j-1);
+            j = j-1;
+        }
+    }
+}
 
 int main(){
 
     int a[] = {8,7,6,5,4,3};
     int x = 6;
 
-    selectionSort(a,6);
+    InsertionSort(a,6);
 
 
     for(int i=0; i<6;i++){
