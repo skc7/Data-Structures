@@ -130,12 +130,39 @@ void MergeSort(int A[], int l, int r){
 }
 
 
+int Partition(int *A,int start, int end){
+    int pivot = A[end];
+    int partitionIndex = start;
+    for(int i= start; i<end; i++){
+        if(A[i] < pivot){
+            swap(A,i,partitionIndex);
+            partitionIndex++;
+        }
+    }
+    swap(A,partitionIndex,end);
+    return partitionIndex;
+}
+
+
+void QuickSort(int *A, int start, int end){
+    if(start >= end)
+        return;
+    int partitionIndex = Partition(A,start,end);
+    QuickSort(A,start,partitionIndex-1);
+    QuickSort(A,partitionIndex+1,end);
+    
+
+
+
+}
+
+
 int main(){
 
     int a[] = {8,7,6,5,4,3};
     int x = 6;
 
-    MergeSort(a,0,5);
+    QuickSort(a,0,5);
 
 
     for(int i=0; i<6;i++){
