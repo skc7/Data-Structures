@@ -30,6 +30,17 @@ void swap(int a[],int pos1, int pos2){
     a[pos2] = temp;
 }
 
+
+void BubbleSort(int A[],int len){
+    for(int i=0; i<len-1 ; i++){
+        for(int j=0;j<len-2;j++){
+            if(A[j] > A[j+1]){
+                swap(A,j,j+1);
+            }
+        }
+    }
+}
+
 void selectionSort(int a[],int len){
     int sPOS = 0;
     int endPOS = len -1;
