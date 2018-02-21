@@ -146,7 +146,7 @@ if(K == 1){
                     
                 }
             
-				if(remaining[i] < 0  &&  remaining[i+1] < 0){
+	      if(remaining[i] < 0  &&  remaining[i+1] < 0){
                     
                     if(Array[i+1][0] - Array[i-1][1] < 0){
                         printf("Bad\n");
