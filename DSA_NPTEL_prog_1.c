@@ -138,22 +138,30 @@ if(K == 1){
                   else{
                         for(int j = 0; j <= N; j++){
                             if(Array[i-1][1] - Array[i-1][0] +1 <= remaining[j]){
-                                ans = 1;
-                                break;
+                                printf("Good\n");
+                                return 0;
                             }
                         }
                     }
                     
                 }
             
-                if(remaining[i] < 0  &&  remaining[i+1] < 0){
+				if(remaining[i] < 0  &&  remaining[i+1] < 0){
+                    
+                    if(Array[i+1][0] - Array[i-1][1] < 0){
+                        printf("Bad\n");
+                        return 0;
+                    }
+
                     for(int j = 0; j <= N; j++){
                         if(Array[i][1] - Array[i][0] +1 <= remaining[j]){
-                            ans = 1;
-                            break;
+                            printf("Good\n");
+                            return 0;
                         }
                     }
-                }        
+
+                    
+                }       
         }
     }
 
