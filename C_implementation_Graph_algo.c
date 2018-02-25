@@ -48,6 +48,17 @@ void addEdge(struct Graph* G, int src, int dest){
 
 }
 
+void addEdge_DAG(struct Graph* G, int src, int dest){
+    struct Node* newNode = new_node(dest);
+    newNode->next = G->array[src].head;
+    G->array[src].head = newNode;
+
+    //newNode = new_node(src);
+    //newNode->next = G->array[dest].head;
+    //G->array[dest].head = newNode;
+
+}
+
 void printGraph(struct Graph* G){
     
     for(int i=0;i<G->V;i++){
@@ -177,21 +188,75 @@ void DFS_rec(struct Graph* G,int s){
 }
 
 
+void TopologicalSort(struct Graph* G){
+    int* indegree = (int*)malloc(G->V * sizeof(int));
+    for(int i=0;i<G->V;i++){
+        indegree[i] = 0;
+        //printf("\nindegree[%d] = %d",i,indegree[i]);
+    }
+    struct Node* temp = NULL;
+    for(int i=0;i<G->V;i++){
+        temp = G->array[i].head;
+        
+        while(temp != NULL){
+            
+            if(temp->dest){
+                indegree[temp->dest] = 1 + indegree[temp->dest];
+                temp = temp->next;
+            }
+        }
+    }
+
+    for(int i=0;i<G->V;i++){
+        
+        printf("\nindegree[%d] = %d",i,indegree[i]);
+    }
+
+    queue<int> Q;
+
+    for(int i=0; i<G->V;i++){
+        if(indegree[i] == 0){
+            Q.push(i);
+        }
+    }
+
+    while(!Q.empty()){
+        int s = Q.front();
+        Q.pop();
+        indegree[s] = -1;
+        printf("\n %d",s);
+        temp = G->array[s].head;
+        while(temp != NULL){
+            
+            indegree[temp->dest] = indegree[temp->dest] - 1;
+            if(indegree[temp->dest] == 0){
+                Q.push(temp->dest);
+            }
+            temp = temp->next;
+        }
+
+    }
+    
+
+
+}
+
+
 int main(){
 
     struct Graph* graph = createGraph(5);
-    addEdge(graph,0,1);
-    addEdge(graph, 0, 4);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 1, 3);
-    addEdge(graph, 1, 4);
-    addEdge(graph, 2, 3);
-    addEdge(graph, 3, 4);
+    addEdge_DAG(graph,0,1);
+    addEdge_DAG(graph, 0, 4);
+    addEdge_DAG(graph, 1, 2);
+    addEdge_DAG(graph, 1, 3);
+    addEdge_DAG(graph, 1, 4);
+    addEdge_DAG(graph, 2, 3);
+    addEdge_DAG(graph, 3, 4);
     printGraph(graph);
 
     //BFS(graph,0);
-    DFS_rec(graph,0);
-
+    //DFS_rec(graph,0);
+    TopologicalSort(graph);
 
     return 0;
 }
