@@ -187,12 +187,19 @@ void DFS_rec(struct Graph* G,int s){
 
 }
 
+int max(int a,int b){
+    if(a>b)
+        return a;
+    else 
+        return b;
+}
 
 void TopologicalSort(struct Graph* G){
     int* indegree = (int*)malloc(G->V * sizeof(int));
+    int* LPT = (int*)malloc(G->V * sizeof(int));
     for(int i=0;i<G->V;i++){
         indegree[i] = 0;
-        //printf("\nindegree[%d] = %d",i,indegree[i]);
+        LPT[i] = 0;
     }
     struct Node* temp = NULL;
     for(int i=0;i<G->V;i++){
@@ -227,8 +234,9 @@ void TopologicalSort(struct Graph* G){
         printf("\n %d",s);
         temp = G->array[s].head;
         while(temp != NULL){
-            
+
             indegree[temp->dest] = indegree[temp->dest] - 1;
+            LPT[temp->dest] = max(LPT[temp->dest],1+s);
             if(indegree[temp->dest] == 0){
                 Q.push(temp->dest);
             }
@@ -236,7 +244,13 @@ void TopologicalSort(struct Graph* G){
         }
 
     }
-    
+
+/*
+    for(int i=0;i<G->V;i++){
+        
+        printf("\nLPT[%d] = %d",i,LPT[i]);
+    }
+*/  
 
 
 }
