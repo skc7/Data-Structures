@@ -28,14 +28,29 @@ struct Graph* createGraph(int V){
     struct Graph* G = (struct Graph*)malloc(sizeof(struct Graph));
     
     G->V = V;
-    G->array = (struct List*)malloc(V*sizeof(struct List));
+    G->array = (struct List*)malloc((V+1)*sizeof(struct List));
    
 
-    for(int i=0;i<G->V;i++){
+    for(int i=0;i<=G->V;i++){
         G->array[i].head = NULL;
     }
     return G;
 }
+
+void DeleteGraph(struct Graph** G){
+
+  for(int del=0;del<=(*G)->V;del++){
+    struct Node* temp = (*G)->array[del].head;
+    while(temp != NULL){
+      free(temp);
+      temp = temp->next;
+    }
+  }
+free(*G);
+return;
+}
+
+
 
 void addEdge(struct Graph* G, int src, int dest){
     struct Node* newNode = new_node(dest);
@@ -77,8 +92,8 @@ void DFS_rec(struct Graph* G,int* visited,int* comp,int count,int s){
 
     while(temp != NULL){
         if(visited[temp->dest] != 1){
-            comp[temp->dest] = count;
-            visited[temp->dest] = 1;
+            //comp[temp->dest] = count;
+            //visited[temp->dest] = 1;
             DFS_rec(G,visited,comp,count,temp->dest);            
             
         }
@@ -123,17 +138,20 @@ int main(){
     int u[M+1];
     int v[M+1];
     int Muse[N+1];
-
+    int i = 0;
 
     scanf("%d %d %d",&N,&M,&K);
     
-    struct Graph* graph = createGraph(N);
+    //struct Graph* graph = createGraph(N);
 
-    for(int i=1;i<=M;i++){
+    for(i=1;i<=M;i++){
         scanf("%d %d",&u[i],&v[i]);  
         
-        addEdge(graph,u[i],v[i]);   
+        //addEdge(graph,u[i],v[i]);   
     }
+
+
+
 
     
     int a=1;
@@ -144,24 +162,36 @@ int main(){
         scanf("%d%c",&Muse[a],&temp);
         ++a;
     }
+    //printGraph(graph);
+
+    struct Graph* graph = createGraph(N);
+    
+    for(i=1;i<=M;i++){
+  
+            
+            addEdge(graph,u[i],v[i]);   
+    }
+
+
 
     int visited[N + 1];
-    visited[0] = -1;
+    visited[0] = -123;
     for(int k=1; k<= N; k++){
         visited[k] = 0;
     }
     
     int comp[N + 1];
-    comp[0] = -1;
-    for(int i=1; i<= graph->V; i++){
+    comp[0] = -123;
+    for(i=1; i<= graph->V; i++){
         comp[i] = -1;
     }
     
     //printGraph(graph);
     
     int count = 0;
-    
-    for(int i=1; i<=graph->V;i++){
+
+ 
+    for(i=1; i<=graph->V;i++){
       //printf("\nvisited[%d] = %d",i,visited[i]);
         if(visited[i] == 0){
           
@@ -171,11 +201,21 @@ int main(){
             
         }
     }
+/*
+    for(int j=1;j<=N;j++){
+      printf("\nvisited[%d] = %d",j,visited[j]);
+    }
 
-    
+    for(int j=1;j<=N;j++){
+      printf("\ncomp[%d] = %d",j,comp[j]);
+    }
+*/
+
+
+   
     int m_add[count+1];
     m_add[0] = -1;
-    for(int i=1;i<=count;i++){
+    for(i=1;i<=count;i++){
         m_add[i] = 0;
         for(int j =1;j<=graph->V;j++){
             if(comp[j] == i){
@@ -186,13 +226,12 @@ int main(){
     }
 
     InsertionSort(m_add,count+1);
-
     /*
     printf("\nInsertion sort = ");
     for(int i=0;i<=count;i++){
         printf(" %d",m_add[i]);
     }
-    */
+*/
 
 
     int Nikhil = 1;
@@ -200,12 +239,17 @@ int main(){
     int output = 0;
     if(K > count){
         printf("-1\n");
-        
+        DeleteGraph(&graph);
         return 0;
     }
     
+    if(K < 0 || M <0 || N < 0){
+      printf("-1\n");
+      DeleteGraph(&graph);
+      return 0;
+    }
     else{
-        int i = K;
+        i = K;
         while(i != 0){
             if(Lavanya == Nikhil){
                 output = output + m_add[Nikhil];
@@ -224,13 +268,6 @@ int main(){
     }
 
     printf("%d\n",output);
-
-
-    
-    
-
-
-
-
+    DeleteGraph(&graph);
     return 0;
 }
