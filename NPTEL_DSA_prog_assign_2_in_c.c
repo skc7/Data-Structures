@@ -135,44 +135,42 @@ int main(){
     int N = -1;
     int M = -1;
     int K = -1;
+
+    int i = 0;
+    int a=1;
+
+
+    scanf("%d %d %d",&N,&M,&K);
+
+    if(N == 0 || K == 0){
+        printf("-1\n");
+        return 0;
+    }
+
     int u[M+1];
     int v[M+1];
     int Muse[N+1];
-    int i = 0;
+    char temp;
+    u[0] = -1;
+    v[0] = -1;
 
-    scanf("%d %d %d",&N,&M,&K);
-    
-    //struct Graph* graph = createGraph(N);
 
     for(i=1;i<=M;i++){
         scanf("%d %d",&u[i],&v[i]);  
-        
-        //addEdge(graph,u[i],v[i]);   
     }
-
-
-
-
-    
-    int a=1;
-    char temp;
-
 
     while(temp != '\n'){
         scanf("%d%c",&Muse[a],&temp);
         ++a;
     }
-    //printGraph(graph);
 
     struct Graph* graph = createGraph(N);
     
     for(i=1;i<=M;i++){
-  
-            
-            addEdge(graph,u[i],v[i]);   
+        addEdge(graph,u[i],v[i]);   
     }
 
-
+    //printGraph(graph);
 
     int visited[N + 1];
     visited[0] = -123;
@@ -185,34 +183,18 @@ int main(){
     for(i=1; i<= graph->V; i++){
         comp[i] = -1;
     }
-    
-    //printGraph(graph);
-    
-    int count = 0;
 
- 
+    int count = 0;
+    
+     
     for(i=1; i<=graph->V;i++){
-      //printf("\nvisited[%d] = %d",i,visited[i]);
+        //printf("\nvisited[%d] = %d",i,visited[i]);
         if(visited[i] == 0){
-          
             ++count;
             DFS_rec(graph,visited,comp,count,i);
-           
-            
         }
     }
-/*
-    for(int j=1;j<=N;j++){
-      printf("\nvisited[%d] = %d",j,visited[j]);
-    }
 
-    for(int j=1;j<=N;j++){
-      printf("\ncomp[%d] = %d",j,comp[j]);
-    }
-*/
-
-
-   
     int m_add[count+1];
     m_add[0] = -1;
     for(i=1;i<=count;i++){
@@ -226,13 +208,6 @@ int main(){
     }
 
     InsertionSort(m_add,count+1);
-    /*
-    printf("\nInsertion sort = ");
-    for(int i=0;i<=count;i++){
-        printf(" %d",m_add[i]);
-    }
-*/
-
 
     int Nikhil = 1;
     int Lavanya = count;
@@ -269,5 +244,7 @@ int main(){
 
     printf("%d\n",output);
     DeleteGraph(&graph);
+
+
     return 0;
 }
