@@ -16,6 +16,8 @@ struct Graph{
     struct List* array;
 };
 
+
+
 struct Node* new_node(int dest){
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     
@@ -106,10 +108,6 @@ void DFS_rec(struct Graph* G,int* visited,int* comp,int count,int s){
  
 
 
-
-
-
-
 void swap(int a[],int pos1, int pos2){
     int temp = 0;
     temp = a[pos1];
@@ -127,6 +125,81 @@ void InsertionSort(int a[],int len){
             }
         }
     }
+
+
+
+
+void push(struct Node** root, int x){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->dest = x;
+    newNode->next = NULL;
+    
+    newNode->next = *root;
+    *root = newNode;
+    return;
+    //cout << "\n" << x << " pushed to stack" << endl;
+    
+}
+    
+int pop(struct Node** root){
+    
+    struct Node* temp = *root;
+ /*   
+    if(isEmpty(temp) == 1){
+        //cout << "\nstack underflow" << endl;
+        return NULL;
+    }
+ */   
+    *root = (*root)->next;
+    int popped = temp->dest;
+    free(temp);
+    //cout << "\n" << popped << " popped out of stack" << endl;
+    return popped;
+    
+}
+
+int front(struct Node* root){
+    return root->dest;
+}
+
+int isEmpty(struct Node* root){
+    if(root == NULL){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+
+void DFS_iter(struct Graph* G,int* visited,int* comp,int count,int s){
+    
+    struct Node* stk = NULL;
+    visited[s] = 1;
+    comp[s] = count;
+    push(&stk,s);
+
+    struct Node* temp = NULL;
+
+    while(!isEmpty(stk)){
+        s = front(stk);
+        //cout << s << " ";        
+        temp = G->array[s].head;
+        pop(&stk);
+        while(temp != NULL){
+            if(!visited[temp->dest]){
+                visited[temp->dest] = 1;
+                comp[temp->dest] = count;
+                push(&stk,temp->dest);
+            }
+            temp = temp->next;
+
+        }
+    }
+  return;
+}
+
+
 
 
 
@@ -191,7 +264,7 @@ int main(){
         //printf("\nvisited[%d] = %d",i,visited[i]);
         if(visited[i] == 0){
             ++count;
-            DFS_rec(graph,visited,comp,count,i);
+            DFS_iter(graph,visited,comp,count,i);
         }
     }
 
@@ -226,8 +299,8 @@ int main(){
     else{
         i = K;
         while(i != 0){
-            if(Lavanya == Nikhil){
-                output = output + m_add[Nikhil];
+            if(Lavanya == Nikhil || i == 1){
+                output = output + m_add[Lavanya];
                 i = i -1;
             }
     
@@ -235,7 +308,7 @@ int main(){
                 output = output + m_add[Lavanya] + m_add[Nikhil];
                 ++Nikhil;
                 --Lavanya;
-                i = i -2;
+                i = i - 2;
             }
         }
 
