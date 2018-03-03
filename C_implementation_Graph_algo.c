@@ -255,6 +255,40 @@ void TopologicalSort(struct Graph* G){
 
 }
 
+void DFS_iter(struct Graph* G,int* visited,int* comp,int count,int s){
+    
+    struct Node* stk = NULL;
+
+    push(&stk,s);
+    visited[s] = 1;
+    comp[s] = count;
+    struct Node* temp = NULL;
+
+    while(!isEmpty(stk)){
+        s = front(stk);
+              
+        //temp = G->array[s].head;
+        
+        
+        for(temp = G->array[s].head;temp!=NULL;temp=temp->next){
+            if(!visited[temp->dest]){
+                visited[temp->dest] = 1;
+                comp[temp->dest] = count;
+                push(&stk,temp->dest);
+                
+                break;
+            }
+        }
+                
+
+        if(temp == NULL){
+            pop(&stk);
+        }   
+
+    }
+}
+
+
 
 int main(){
 
