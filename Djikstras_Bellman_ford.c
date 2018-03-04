@@ -74,24 +74,58 @@ void Djikstras(struct Graph* G,int s,int* visited,int* distance,int** weight){
         visited[i] = 0;
         distance[i] = 9999;
     }
-
+    
     distance[s] = 0;
     struct Node* temp = NULL;
+    int min = 9999;
+    int min_index = s;
+
     for(i=0;i<G->V;i++){
+
         for(j=0;j<G->V;j++){
-            if(visited[j]==false && distance[j] < 9999)
-                break;
+            if(visited[j]==false && distance[j] <= min){
+                 min = distance[j];
+                 min_index = j;
+            }
         }
-        visited[j] = 1;
-        temp = G->array[j].head;
+
+
+        visited[min_index] = 1;
+        temp = G->array[min_index].head;
         while(temp!=NULL){
             
-            if(visited[temp->dest] == 0 && distance[temp->dest] > distance[j] + weight[temp->dest][j]){
-                distance[temp->dest] = distance[j] + weight[temp->dest][j];
+            if(visited[temp->dest] == 0 && distance[temp->dest] > distance[min_index] + weight[temp->dest][j]){
+                distance[temp->dest] = distance[min_index] + weight[temp->dest][j];
             }
             temp = temp->next;
         }
     }
+}
+
+void Bellman_ford(struct Node* Graph,int s,int* distance){
+
+for(int i=0;i<G->V;i++){
+    distance[i] = 9999;
+}
+
+distance[s] = 0;
+
+for(i =0;i<n;i++){
+    for(int j=0;j<G->V;j++){
+        struct Node* temp = G->array[j].head;
+        for(temp = G->array[j].head;temp!=NULL;temp=temp->next){
+            if(distance[temp->dest] <= distance[j] + weight[j][temp->dest]){
+                distance[temp->dest] = distance[temp->dest];
+            }
+            else{
+                distance[temp->dest] = distance[j]+weight[j][temp->dest];
+            }
+
+           
+        }
+    }
+}
+
 }
 
 int main(){
