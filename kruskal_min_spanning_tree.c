@@ -116,7 +116,7 @@ void kruskals(struct Graph* G,int** TE){
                     }
                 }
                 
-                if(j == TE_len-1){
+                if(j == TE_len-2){
                     break;
                 }
                 
@@ -132,15 +132,15 @@ int main(){
     struct Graph* G = createGraph(V,E);
     G->edge[0].src = 0;
     G->edge[0].dest = 1;
-    G->edge[0].weight = 0;
+    G->edge[0].weight = 1;
 
     G->edge[1].src = 1;
     G->edge[1].dest = 2;
-    G->edge[1].weight = 0;
+    G->edge[1].weight = 10;
 
     G->edge[2].src = 0;
     G->edge[2].dest = 2;
-    G->edge[2].weight = 0;
+    G->edge[2].weight = 5;
 
     int** TE = (int**)malloc((2)*sizeof(int*));
     for(int i=0;i<=V;i++){
