@@ -30,42 +30,7 @@ struct Node* minValNode(struct Node* node){
     return curr;
 }
 
-struct Node* Delete_Node(struct Node* root, int key){
-    if(root == NULL){
-        return root;
-    }
 
-    if(key < root->data){
-        root->left = Delete_Node(root->left,key);
-    }
-
-    else if(key > root->data){
-        root->right = Delete_Node(root->right,key);
-    }
-
-    else{
-
-        if(root->left == NULL){
-            struct Node* temp = root->right;
-            free(root);
-            return temp;
-        }
-
-        else if(root->right == NULL){
-            struct Node* temp = root->left;
-            free(root);
-            return temp;
-        }
-
-        struct Node* temp = minValNode(root->right);
-
-        root->data = temp->data;
-
-        root->right = Delete_Node(root->right,temp->data);
-
-
-    }
-}
 
 void inorder_succ_pred(struct Node* root, int key,struct Node** pred, struct Node** succ){
     //struct Node* succ;
@@ -199,7 +164,7 @@ struct Node* insert(struct Node* root,int data){
             return root;
 
         int balance =  Bal_factor(root);
-        printf("\nBal Fact = %d",balance);
+        //printf("\nBal Fact = %d",balance);
 
         //LL case
         if(balance > 1 && data < root->left->data){
@@ -225,18 +190,95 @@ struct Node* insert(struct Node* root,int data){
         return root;
 }
 
+struct Node* Delete_Node(struct Node* root, int data){
+    if(root == NULL){
+        return root;
+    }
+
+    if(data < root->data){
+        root->left = Delete_Node(root->left,data);
+    }
+
+    else if(data > root->data){
+        root->right = Delete_Node(root->right,data);
+    }
+
+    else{
+
+        if(root->left == NULL){
+            struct Node* temp = root->right;
+            free(root);
+            return temp;
+        }
+
+        else if(root->right == NULL){
+            struct Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        struct Node* temp = minValNode(root->right);
+
+        root->data = temp->data;
+
+        root->right = Delete_Node(root->right,temp->data);
+
+
+    }
+
+    if(root == NULL){
+        return root;
+    }
+
+    int balance =  Bal_factor(root);
+    //printf("\nBal Fact = %d",balance);
+
+    //LL case
+    if(balance > 1 && data < root->left->data){
+        return RightRotate(root);
+    }
+
+    //LR case
+    if(balance > 1 && data > root->left->data){
+        root->left = LeftRotate(root->left);
+        return RightRotate(root);
+    }
+
+    //RR case
+    if(balance < -1 && data > root->right->data){
+        return LeftRotate(root);
+    }
+
+    //RL case
+    if(balance < -1 && data < root->right->data){
+        root->right = RightRotate(root->right);
+        return LeftRotate(root);
+    }
+    return root;
+
+
+}
 
 int main(){
 
     struct Node* root = NULL;
-    root = insert(root,5);
-    root = insert(root,7);
-    root = insert(root,6);
-    //root = insert(root,1);
-    //root = insert(root,5);
-    //root = insert(root,6);
+    root = insert(root, 9);
+    root = insert(root, 5);
+    root = insert(root, 10);
+    root = insert(root, 0);
+    root = insert(root, 6);
+    root = insert(root, 11);
+    root = insert(root, -1);
+    root = insert(root, 1);
+    root = insert(root, 2);
     
-    printf("\n");
+    printf("\nBefore");
+    preorder_rec(root);
+
+
+    root = Delete_Node(root,10);
+
+    printf("\nAfter");
     inorder_rec(root);
 
 
