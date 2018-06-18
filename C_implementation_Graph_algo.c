@@ -236,7 +236,7 @@ void TopologicalSort(struct Graph* G){
         while(temp != NULL){
 
             indegree[temp->dest] = indegree[temp->dest] - 1;
-            LPT[temp->dest] = max(LPT[temp->dest],1+s);
+            LPT[temp->dest] = max(LPT[temp->dest],1+LPT[s]);
             if(indegree[temp->dest] == 0){
                 Q.push(temp->dest);
             }
